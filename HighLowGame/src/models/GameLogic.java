@@ -10,19 +10,23 @@ public class GameLogic {
 
 	private int lowRange;
 	private int highRange;
-	private static int guesses;
 	private int randomNo;
 	private int guessedNo;
+	private int guesses;
 
-	private static double doubleGamesCreated = 0;
+	private static int totalGuesses = 0;
+	private static double gamesCreated = 0;
 
 	public GameLogic(int lowRange, int highRange) {
 		this.lowRange = lowRange;
 		this.highRange = highRange;
+
 		random = new Random();
-		doubleGamesCreated++;
-		guesses = 1;
-		
+
+		gamesCreated++;
+
+		guesses = 0;
+
 		randomNo = randomGenerator(lowRange, highRange);
 		loopGame();
 	}
@@ -31,7 +35,7 @@ public class GameLogic {
 		return random.nextInt((high + 1) - low) + low;
 	}
 
-	private static int gameGuesses() {
+	private int gameGuesses() {
 		return guesses;
 	}
 
@@ -44,25 +48,33 @@ public class GameLogic {
 			if (guessedNo > randomNo) {
 				JOptionPane.showMessageDialog(null, "Lower");
 				guesses++;
+				totalGuesses++;
+				System.out.println(guesses);
+				System.out.println(totalGuesses);
 			} else if (guessedNo < randomNo) {
 				JOptionPane.showMessageDialog(null, "Higher");
 				guesses++;
+				totalGuesses++;
+				System.out.println(guesses);
+				System.out.println(totalGuesses);
 			} else {
+				guesses++;
+				totalGuesses++;
 				JOptionPane.showMessageDialog(null, "You guessed the correct number and it was: (" + randomNo + ")"
 						+ " and you guessed: " + gameGuesses() + " times");
+				System.out.println(guesses);
+				System.out.println(totalGuesses);
+
 			}
 		} while (guessedNo != randomNo);
 	}
 
 	public static double gamesCreated() {
-		return doubleGamesCreated;
+		return gamesCreated;
 	}
-	
+
 	public static double averageGuesses() {
-		double average = 0;
-		for (int i = 0; i < gamesCreated(); i++) {
-			average += (double) gameGuesses();
-		}
-		return average/doubleGamesCreated;
+
+		return totalGuesses / gamesCreated;
 	}
 }

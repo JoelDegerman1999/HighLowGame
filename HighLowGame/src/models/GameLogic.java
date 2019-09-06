@@ -7,22 +7,22 @@ import javax.swing.JOptionPane;
 public class GameLogic {
 
 	private Random random;
-	
+
 	private int lowRange;
 	private int highRange;
-	private int guesses;
+	private static int guesses;
 	private int randomNo;
 	private int guessedNo;
-	
-	private static int intGamesCreated;
+
+	private static double doubleGamesCreated = 0;
 
 	public GameLogic(int lowRange, int highRange) {
 		this.lowRange = lowRange;
 		this.highRange = highRange;
 		random = new Random();
-		intGamesCreated = 0;
-		intGamesCreated++;
-
+		doubleGamesCreated++;
+		guesses = 1;
+		
 		randomNo = randomGenerator(lowRange, highRange);
 		loopGame();
 	}
@@ -31,7 +31,7 @@ public class GameLogic {
 		return random.nextInt((high + 1) - low) + low;
 	}
 
-	private int gameGuesses() {
+	private static int gameGuesses() {
 		return guesses;
 	}
 
@@ -41,7 +41,6 @@ public class GameLogic {
 			stringGuessedNo = JOptionPane
 					.showInputDialog("Guess for a number between (" + lowRange + "-" + highRange + ")");
 			guessedNo = Integer.parseInt(stringGuessedNo);
-
 			if (guessedNo > randomNo) {
 				JOptionPane.showMessageDialog(null, "Lower");
 				guesses++;
@@ -54,5 +53,16 @@ public class GameLogic {
 			}
 		} while (guessedNo != randomNo);
 	}
+
+	public static double gamesCreated() {
+		return doubleGamesCreated;
+	}
 	
+	public static double averageGuesses() {
+		double average = 0;
+		for (int i = 0; i < gamesCreated(); i++) {
+			average += (double) gameGuesses();
+		}
+		return average/doubleGamesCreated;
+	}
 }
